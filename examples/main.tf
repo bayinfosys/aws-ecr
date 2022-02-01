@@ -6,6 +6,6 @@ module "ecr" {
 
   containers = {
     "custom-nginx" = { image_tag = "v0.3" }
-    "corporate/team/name" = { image_tag = "latest" }
+    "corporate-team-name" = { image_tag = "latest" }
   }
 }
