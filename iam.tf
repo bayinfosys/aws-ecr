@@ -22,9 +22,7 @@ data "aws_iam_policy_document" "default" {
       "ecr:PutImage",
     ]
 
-    resources = [
-      aws_ecr_repository.[*].arn,
-    ]
+    resources = [for r in aws_ecr_repository.default: r.arn]
   }
 }
 
@@ -38,14 +36,13 @@ resource "aws_iam_policy" "default" {
 resource "aws_iam_user" "default" {
   name = "${var.project_name}-ecr-pusher"
   force_destroy = true
-  tags = var.project_tags
+  tags = var.tags
 }
 
 resource "aws_iam_user_policy" "default" {
   name_prefix = "${var.project_name}-ecr-pusher-policy"
   user = aws_iam_user.default.name
   policy = aws_iam_policy.default.policy
-  tags = var.project_tags
 }  
 
 resource "aws_iam_access_key" "default" {
